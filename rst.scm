@@ -1,3 +1,4 @@
+
 ;; 1. (fromTo k n) returns the list of integers from k to n, inclusive.
 ;; Base case: if k > 0 return empty list
 ;; Assumption: Assume (fromTo (+ k 1) n) works
@@ -25,4 +26,6 @@
   (cond ((null? L) '())
         (else (cons (car L) (removeMults (car L) (removeAllMults (cdr L)))))))
 
-;; 4. 
+;; 4. (primes n) computes the list of all primes less than or equal to n.
+(define (primes n)
+  (removeAllMults (fromTo 2 n)))
