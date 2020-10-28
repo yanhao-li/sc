@@ -58,13 +58,26 @@
 
 ;; 7.(composition fns) takes a list of functions fns and returns a function that is the composition of the functions in fns.
 ;; Basecase: fns only contains one function, return that function
-;; Assumption: (composition cdr(fns)) works correct
+;; Assumption: (composition cdr(fns)) works correctly
 ;; Step: Return the function f(x)=((car fns) cdr(fns))
-;; Question: why last line can't just be  (else ((car fns) ((composition (cdr fns)) x))
+;; Question: why last line can't just be  (else ((car fns) ((composition (cdr fns))))?
 (define (composition fns)
   (cond ((null? (cdr fns)) (car fns))
         (else (lambda(x) ((car fns) ((composition (cdr fns)) x))))))
 
 ;; 8. (bubble-to-n L N) takes a list of numbers L, and an integer N, return a list containing all elements of L,
 ;; except that the largest element among the first N elements of L is now the Nth element of the resulting list
-;; Basecase: 
+;; Basecase: if N is less than 2 or L has no more than 1 element, return L
+;; Assumption: (bubble-to-n (cdr L) (- N 1)) works correctly
+;; Step: Compare (car L) with the second element of list, if first element is smaller, cons the first element onto the result of (bubble-to-n (cdr L) (- N 1))
+;; Otherwise the second element will be the first one, cons it with the result of (bubble-to-n (cons (car L) (cddr L)) (- N 1)
+
+(define (bubble-to-n L N)
+  (cond ((null? (cdr L)) L)
+        ((< N 2) L)
+        (else (cond ((< (car L) (cadr L)) (cons (car L) (bubble-to-n (cdr L) (- N 1))))
+                    (else (cons (cadr L) (bubble-to-n (cons (car L) (cddr L)) (- N 1))))))))
+
+;; 9. (b-s L N) returns the a list containing the elements of L in their original order except that the first N elements are in sorted order.
+;; Basecase: if N is less than 2 or L has no more than 1 element, return L
+;; Assumption: 
