@@ -29,3 +29,42 @@
 ;; 4. (primes n) computes the list of all primes less than or equal to n.
 (define (primes n)
   (removeAllMults (fromTo 2 n)))
+
+;; 5. (maxDepth L) returns the maximum nesting depth of any element within L, such that the topmost elements are at depth 0
+;; Basecase: L is empty, return 0, if L is a single element, return 0
+;; Assumption: maxDepth works for (cdr L) and (car L)
+;; Step: 1. Compute (maxDepth (cdr L)) and (maxDepth (car L))
+;;       2. Check if (car L) is a single element, if it is, return the result of (maxDepth (cdr L))
+;;       2. if it isn't, compare the 1 + result of (maxDepth (car L)), with the of (maxDepth (cdr L)).
+;;       3. return the larger result
+(define (maxDepth L)
+  (cond ((null? L) 0)
+        ((integer? L) 0)
+        (else (let ((a (maxDepth (car L))) (b (maxDepth (cdr L))))
+           (cond ((integer? (car L)) b)
+                 (else (cond ((> (+ a 1) b) (+ a 1))
+                             (else b))))))))
+
+;; 6. (prefix exp) transforms an infix arithmetic expression exp into prefix notation
+;; Basecase: exp is empty or a single integer, return the exp.
+;; Assumption: for an exp (a opertor b), (prefix a) and (prefix b) works well
+;; Step: Reconstruct the list '((caar exp) (prefix (car exp)) (prefix (cddr exp)))
+
+(define (prefix exp)
+  (cond ((null? exp) exp)
+        ((integer? exp) exp)
+        ((null? (cdr exp)) (car exp))
+        (else (list (cadr exp) (prefix (car exp)) (prefix (cddr exp))))))
+
+;; 7.(composition fns) takes a list of functions fns and returns a function that is the composition of the functions in fns.
+;; Basecase: fns only contains one function, return that function
+;; Assumption: (composition cdr(fns)) works correct
+;; Step: Return the function f(x)=((car fns) cdr(fns))
+;; Question: why last line can't just be  (else ((car fns) ((composition (cdr fns)) x))
+(define (composition fns)
+  (cond ((null? (cdr fns)) (car fns))
+        (else (lambda(x) ((car fns) ((composition (cdr fns)) x))))))
+
+;; 8. (bubble-to-n L N) takes a list of numbers L, and an integer N, return a list containing all elements of L,
+;; except that the largest element among the first N elements of L is now the Nth element of the resulting list
+;; Basecase: 
