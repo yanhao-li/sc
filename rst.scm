@@ -88,4 +88,5 @@
         (else (b-s (bubble-to-n L N) (- N 1)))))
 
 ;; 10. (bubble-sort L) return L in sorted order
-
+(define (bubble-sort L)
+  (b-s L (length L)))
