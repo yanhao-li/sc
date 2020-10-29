@@ -70,7 +70,7 @@
 ;; Basecase: if N is less than 2 or L has no more than 1 element, return L
 ;; Assumption: (bubble-to-n (cdr L) (- N 1)) works correctly
 ;; Step: Compare (car L) with the second element of list, if first element is smaller, cons the first element onto the result of (bubble-to-n (cdr L) (- N 1))
-;; Otherwise the second element will be the first one, cons it with the result of (bubble-to-n (cons (car L) (cddr L)) (- N 1)
+;; Otherwise the second element will be the first one, cons it with the result of (bubble-to-n (cons (car L) (cddr L)) (- N 1))
 
 (define (bubble-to-n L N)
   (cond ((null? (cdr L)) L)
@@ -79,5 +79,13 @@
                     (else (cons (cadr L) (bubble-to-n (cons (car L) (cddr L)) (- N 1))))))))
 
 ;; 9. (b-s L N) returns the a list containing the elements of L in their original order except that the first N elements are in sorted order.
-;; Basecase: if N is less than 2 or L has no more than 1 element, return L
-;; Assumption: 
+;; Basecase: if L is empty or N equal to 0, retunr L
+;; Assumption: (b-s L (- N 1)) works correctly
+;; Step: firstly using (bubble-to-n L N) to put the correct number onto index N, then recursively call (b-s L (- N 1)) to sort the rest N - 1 items.
+(define (b-s L N)
+  (cond ((null? L) L)
+        ((equal? N 0) L)
+        (else (b-s (bubble-to-n L N) (- N 1)))))
+
+;; 10. (bubble-sort L) return L in sorted order
+
